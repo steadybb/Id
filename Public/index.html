@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Secure ID Server | Digital Credential</title>
+    <title>BYD Executive ID | Stella Li</title>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
     <style>
         * {
@@ -21,7 +21,7 @@
             padding: 24px;
         }
         .id-card-container {
-            max-width: 580px;
+            max-width: 620px;
             width: 100%;
             filter: drop-shadow(0 20px 30px rgba(0,0,0,0.2));
         }
@@ -32,7 +32,7 @@
             box-shadow: 0 25px 45px -12px rgba(0,0,0,0.35);
         }
         .id-header {
-            background: #0a2540;
+            background: #003057;  /* BYD corporate blue */
             padding: 1.2rem 1.8rem;
             color: white;
             display: flex;
@@ -44,17 +44,37 @@
             font-weight: 700;
             font-size: 1rem;
             text-transform: uppercase;
-            background: rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.2);
             padding: 0.2rem 0.8rem;
             border-radius: 40px;
         }
         .issuer {
             font-size: 0.8rem;
-            opacity: 0.85;
+            opacity: 0.9;
             font-family: monospace;
         }
         .id-content {
             padding: 2rem;
+        }
+        /* Name and title section */
+        .executive-info {
+            text-align: center;
+            margin-bottom: 1.8rem;
+        }
+        .exec-name {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #003057;
+            letter-spacing: -0.5px;
+        }
+        .exec-title {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #2c6e9e;
+            margin-top: 0.25rem;
+            border-bottom: 2px solid #ffcd94;
+            display: inline-block;
+            padding-bottom: 0.25rem;
         }
         .id-number-section {
             background: #f4f7fc;
@@ -73,7 +93,7 @@
             font-size: 2.2rem;
             font-weight: 800;
             font-family: 'Courier New', monospace;
-            color: #0a2540;
+            color: #003057;
             word-break: break-word;
         }
         .barcode-area {
@@ -121,7 +141,7 @@
             border-color: #ffcd94;
         }
         .link-icon {
-            background: #0a2540;
+            background: #003057;
             width: 44px;
             height: 44px;
             border-radius: 60px;
@@ -160,6 +180,7 @@
         }
         @media (max-width: 500px) {
             .id-content { padding: 1.2rem; }
+            .exec-name { font-size: 1.5rem; }
             .id-number { font-size: 1.5rem; }
         }
     </style>
@@ -168,21 +189,27 @@
 <div class="id-card-container">
     <div class="id-card">
         <div class="id-header">
-            <span class="badge-title">🔐 VERIFIED DIGITAL ID</span>
-            <span class="issuer">node • secure</span>
+            <span class="badge-title">🔐 BYD EXECUTIVE ID</span>
+            <span class="issuer">secure • global</span>
         </div>
         <div class="id-content">
-            <!-- ID NUMBER (edit here to change) -->
-            <div class="id-number-section">
-                <div class="id-label">IDENTIFICATION NUMBER</div>
-                <div class="id-number" id="displayIdNumber">1234567890</div>
+            <!-- Executive details -->
+            <div class="executive-info">
+                <div class="exec-name">STELLA LI</div>
+                <div class="exec-title">Executive Vice President of BYD Company</div>
             </div>
 
-            <!-- BARCODE -->
+            <!-- ID NUMBER (ID NO. 02) -->
+            <div class="id-number-section">
+                <div class="id-label">IDENTIFICATION NUMBER</div>
+                <div class="id-number" id="displayIdNumber">02</div>
+            </div>
+
+            <!-- BARCODE (encodes "02") -->
             <div class="barcode-area">
                 <div class="barcode-title">📸 OFFICIAL BARCODE (CODE-128)</div>
                 <canvas id="idBarcode"></canvas>
-                <div class="barcode-caption" style="font-size:0.7rem; margin-top:0.5rem;">🔍 Scan me – contains ID number</div>
+                <div class="barcode-caption" style="font-size:0.7rem; margin-top:0.5rem;">🔍 Scan me – contains ID number 02</div>
             </div>
 
             <!-- LINK TO ID PHOTO (static file) -->
@@ -190,14 +217,14 @@
                 <a href="/id_photo.jpg" id="photoLink" class="photo-link-btn" target="_blank">
                     <div class="link-icon">📷</div>
                     <div class="link-text">
-                        <div class="link-title">View my official ID photo</div>
+                        <div class="link-title">View official ID photo</div>
                         <div class="link-sub">click to open image from static folder</div>
                     </div>
                     <div class="arrow-symbol">➡️</div>
                 </a>
             </div>
 
-            <!-- FOOTER with site domain -->
+            <!-- FOOTER with website domain -->
             <div class="website-footer">
                 <span>🌐 official portal</span>
                 <span class="domain-tag" id="footerDomain">www.yourwebsite.com</span>
@@ -205,21 +232,20 @@
         </div>
     </div>
     <div style="text-align: center; margin-top: 16px; font-size:0.7rem; color:#3a5d7c;">
-        ⚡ Replace your ID photo: <strong>public/id_photo.jpg</strong>
+        ⚡ Replace ID photo: <strong>public/id_photo.jpg</strong>
     </div>
 </div>
 
 <script>
     // === CONFIGURATION ===
-    // Change this to your actual ID number
-    const MY_ID_NUMBER = "022026";
+    const MY_ID_NUMBER = "02";            // ID NO. 02
     const SITE_DOMAIN   = "www.yourwebsite.com";
 
     // Update UI
     document.getElementById('displayIdNumber').innerText = MY_ID_NUMBER;
     document.getElementById('footerDomain').innerText = SITE_DOMAIN;
 
-    // Generate barcode
+    // Generate barcode with the new ID number "02"
     const canvas = document.getElementById('idBarcode');
     if (canvas && typeof JsBarcode !== 'undefined') {
         JsBarcode(canvas, MY_ID_NUMBER, {
@@ -232,7 +258,7 @@
             textMargin: 6,
             margin: 10,
             background: "#ffffff",
-            lineColor: "#0a2540"
+            lineColor: "#003057"
         });
     }
 </script>
